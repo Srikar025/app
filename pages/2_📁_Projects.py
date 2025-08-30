@@ -9,6 +9,7 @@ with st.form("proj_form"):
     name = st.text_input("Your Name", value=st.session_state.get("display_name", ""))
     title = st.text_input("Project Title")
     desc = st.text_area("Short Description")
+    github_url = st.text_input("GitHub Repository URL (Optional)", placeholder="https://github.com/username/repo")
     file = st.file_uploader("Optional: Attach a file (zip/pdf/pptx/png/jpg)", type=None)
     submitted = st.form_submit_button("Upload Project")
 
@@ -20,14 +21,19 @@ if submitted:
         file_url = ""
         if file is not None:
             file_url = upload_to_bucket(st.secrets["BUCKET_PROJECTS"], file, subdir="projects")
-        insert_row("projects", {
-            "name": name.strip()[:80],
-            "title": title.strip()[:120],
-            "description": (desc or "").strip(),
-            "file_url": file_url
-        })
-        st.success("Project uploaded!")
-        st.experimental_rerun()
+        
+        try:
+            insert_row("projects", {
+                "name": name.strip()[:80],
+                "title": title.strip()[:120],
+                "description": (desc or "").strip(),
+                "github_url": (github_url or "").strip(),
+                "file_url": file_url
+            })
+            st.success("Project uploaded!")
+            st.rerun()
+        except Exception as e:
+            st.error(f"Failed to upload project: {str(e)}")
 
 
 st.divider()
@@ -45,6 +51,8 @@ else:
         st.markdown(f"**By:** {p['name']}")
         if p.get("description"):
             st.write(p["description"])
+        if p.get("github_url"):
+            st.write(f"🔗 [View on GitHub]({p['github_url']})")
         if p.get("file_url"):
-            st.write(f"[Download / View]({p['file_url']})")
+            st.write(f"📎 [Download / View]({p['file_url']})")
         st.markdown("---")
