@@ -27,7 +27,7 @@ if submitted:
             "file_url": file_url
         })
         st.success("Project uploaded!")
-        st.experimental_rerun()
+        st.rerun()
 
 
 st.divider()

@@ -18,7 +18,7 @@ if not st.session_state["resources_ok"]:
             if pw == st.secrets["RESOURCES_PASSWORD"]:
                 st.session_state["resources_ok"] = True
                 st.success("Upload unlocked.")
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.error("Incorrect password.")
 
@@ -41,7 +41,7 @@ if st.session_state["resources_ok"]:
             "file_url": file_url
         })
         st.success("Resource uploaded!")
-        st.experimental_rerun()
+        st.rerun()
 
 
 st.divider()

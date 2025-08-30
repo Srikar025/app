@@ -7,14 +7,7 @@ st.title("💬 Group Chat")
 
 
 # Auto-refresh every 3 seconds
-st.autorefresh = st.experimental_rerun # alias
-st_autorefresh = st.experimental_rerun # keep a reference to avoid linter issue
-st.experimental_set_query_params() # harmless; ensures rerun behavior is clean
-
-
 refresh_ms = st.sidebar.slider("Auto-refresh (ms)", 1000, 10000, 3000, 500)
-_ = st.experimental_memo.clear() # no-op placeholder
-st_autorefresh = st.experimental_rerun # not actually used; kept for clarity
 
 
 # Message form
@@ -27,7 +20,7 @@ if submitted and msg.strip():
     username = (st.session_state.get("display_name") or "Anonymous").strip()[:50]
     insert_row("chats", {"username": username, "message": msg.strip()})
     st.success("Sent!")
-    st.experimental_rerun()
+    st.rerun()
 
 
 st.divider()
