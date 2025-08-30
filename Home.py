@@ -20,7 +20,8 @@ Welcome! Use the sidebar to navigate:
 
 # Simple display name stored in session (used by Chat/Projects)
 with st.sidebar:
-st.header("Your Display Name")
+    st.header("Your Display Name")
+
 st.text_input("Name", key="display_name", placeholder="e.g., Priya")
 st.caption("Used for chat & project uploads. Optional.")
 
