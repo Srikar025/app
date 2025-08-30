@@ -35,13 +35,17 @@ if st.session_state["resources_ok"]:
         file_url = ""
         if file is not None:
             file_url = upload_to_bucket(st.secrets["BUCKET_RESOURCES"], file, subdir="resources")
-        insert_row("resources", {
-            "title": title.strip()[:120],
-            "description": (desc or "").strip(),
-            "file_url": file_url
-        })
-        st.success("Resource uploaded!")
-        st.rerun()
+        
+        try:
+            insert_row("resources", {
+                "title": title.strip()[:120],
+                "description": (desc or "").strip(),
+                "file_url": file_url
+            })
+            st.success("Resource uploaded!")
+            st.rerun()
+        except Exception as e:
+            st.error(f"Failed to upload resource: {str(e)}")
 
 
 st.divider()
